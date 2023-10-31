@@ -1,1 +1,7 @@
+# Settings VS
 .vscode/settings.json
+
+# Pyc
+models/__pycache__/*.pyc
+tests/test_models/__pycache__/*.pyc
+tests/test_models/__pycache__/*.pyc
