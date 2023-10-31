@@ -5,6 +5,7 @@ from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 import os
 import unittest
+import json
 
 
 class TestFileStorage(unittest.TestCase):
@@ -58,3 +59,33 @@ class TestFileStorage(unittest.TestCase):
         storage.reload()
         FileStorage._FileStorage__objects
         self.assertIn("BaseModel." + bm.id, FileStorage._FileStorage__objects)
+
+    def test_init(self):
+        """ Test instance init"""
+        file = FileStorage()
+        self.assertIsInstance(file._FileStorage__objects, dict)
+        self.assertIsInstance(file._FileStorage__file_path, str)
+
+    def test_reload2(self):
+        """ Test reload filestorage """
+        storage = FileStorage()
+        with self.assertRaises(TypeError):
+            storage.reload(None)
+
+    def test_reload3(self):
+        """ Test reload filestorage """
+        test_dict = {"BaseModel.test": {"id": "test", "created_at": "2023-10-23T14:10:06.000000",
+                                        "updated_at": "2023-10-23T14:10:06.000000", "__class__": "BaseModel"}}
+        with open(FileStorage._FileStorage__file_path, "w") as file:
+            json.dump(test_dict, file)
+
+        storage = FileStorage()
+        storage.reload()
+
+        loaded_obj = storage.all()["BaseModel.test"]
+        self.assertIsInstance(loaded_obj, BaseModel)
+        self.assertEqual(loaded_obj.id, "test")
+        self.assertEqual(str(loaded_obj.created_at), "2023-10-23 14:10:06")
+        self.assertEqual(str(loaded_obj.updated_at), "2023-10-23 14:10:06")
+
+        os.remove(FileStorage._FileStorage__file_path)
