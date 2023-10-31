@@ -5,3 +5,9 @@
 models/__pycache__/*.pyc
 tests/test_models/__pycache__/*.pyc
 tests/test_models/__pycache__/*.pyc
+
+# Json files
+*.json
+
+# file test
+test_save_reload_base_model.py
