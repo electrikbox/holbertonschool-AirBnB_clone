@@ -8,11 +8,22 @@ import uuid
 class BaseModel:
     """ Base model class """
 
-    def __init__(self):
-        """ Initialization instance attributes """
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+    def __init__(self, *args, **kwargs):
+        """ Initialization instance attributes
+        Args:
+             args: set of arguments
+             kwargs: set of arguments with keywords
+        """
+        if kwargs:
+            for key, value in kwargs.items():
+                if key == "created_at" or key == "updated_at":
+                    value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+                if key != '__class__':
+                    setattr(self, key, value)
+        else:   
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
 
     def __str__(self):
         """ String representation of instance
