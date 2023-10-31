@@ -4,7 +4,10 @@
 # Pyc
 models/__pycache__/*.pyc
 tests/test_models/__pycache__/*.pyc
-tests/test_models/__pycache__/*.pyc
+models/engine/__pycache__/*.pyc
+tests/__pycache__/*.pyc
+tests/test_models/test_engine/__pycache__/*.pyc
+
 
 # Json files
 *.json
