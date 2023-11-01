@@ -9,6 +9,6 @@ class Review(BaseModel):
     Args:
         BaseModel : inheritance
     """
-    place_id: str("")
-    user_id: str("")
-    text: str("")
+    place_id = str("")
+    user_id = str("")
+    text = str("")
