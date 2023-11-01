@@ -49,6 +49,7 @@ class TestFileStorage(unittest.TestCase):
         storage.save()
         with open("file.json", "r") as file:
             self.assertIn("BaseModel." + bm.id, file.read())
+        os.remove("file.json")
 
     def test_reload(self):
         """ Test reload filestorage """
@@ -59,6 +60,7 @@ class TestFileStorage(unittest.TestCase):
         storage.reload()
         FileStorage._FileStorage__objects
         self.assertIn("BaseModel." + bm.id, FileStorage._FileStorage__objects)
+        os.remove("file.json")
 
     def test_init(self):
         """ Test instance init"""
