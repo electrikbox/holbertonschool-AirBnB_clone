@@ -143,6 +143,15 @@ or you can run the test file by file with this command :
 ```bash
 python3 -m tests/test_models/test_base_model.py
 ```
+To date, here are the results of our tests :
+```bash
+...................
+----------------------------------------------------------------------
+Ran 19 tests in 0.008s
+
+OK
+```
+
 ### ☂️ Coverage
 
 ```bash
