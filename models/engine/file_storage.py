@@ -2,6 +2,7 @@
 """ Defines FileStorage class """
 
 from models.base_model import BaseModel
+from models.user import User
 import json
 
 
@@ -39,7 +40,6 @@ class FileStorage():
                 data = json.load(file)
                 for key, value in data.items():
                     class_name, obj_id = key.split(".")
-                    class_name = class_name.replace("_", " ")
                     instance = eval(class_name)(**value)
                     self.__objects[key] = instance
         except FileNotFoundError:
