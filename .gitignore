@@ -15,3 +15,8 @@ tests/test_models/test_engine/__pycache__/*.pyc
 # file test
 test_save_reload_base_model.py
 main.py
+
+# Coverage files
+.coverage
+coverage.xml
+setup.cfg
