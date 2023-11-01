@@ -4,6 +4,7 @@
 import unittest
 from models.base_model import BaseModel
 from datetime import datetime
+import os
 
 
 class testBaseModel(unittest.TestCase):
@@ -25,6 +26,7 @@ class testBaseModel(unittest.TestCase):
         first_updated_at = self.model.updated_at
         self.model.save()
         self.assertNotEqual(first_updated_at, self.model.updated_at)
+        os.remove("file.json")
 
     def test_to_dict(self):
         """ Test to dict"""
