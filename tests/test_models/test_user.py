@@ -3,20 +3,21 @@
 
 import unittest
 from models.base_model import BaseModel
+from models.user import User
 from datetime import datetime
 import os
 
 
-class testBaseModel(unittest.TestCase):
-    """ Test class for BaseModel """
+class testUser(unittest.TestCase):
+    """ Test class for User """
 
     def setUp(self):
         """ Set up for test """
-        self.model = BaseModel()
+        self.model = User()
 
     def test_init(self):
         """ Test init """
-        self.assertIsInstance(self.model, BaseModel)
+        self.assertIsInstance(self.model, User)
         self.assertIsInstance(self.model.id, str)
         self.assertIsInstance(self.model.created_at, datetime)
         self.assertIsInstance(self.model.updated_at, datetime)
@@ -41,7 +42,18 @@ class testBaseModel(unittest.TestCase):
         """ Test string rep """
         model_str = str(self.model)
         self.assertIsInstance(model_str, str)
-        self.assertIn('[BaseModel]', model_str)
+        self.assertIn('[User]', model_str)
         self.assertIn('id', model_str)
         self.assertIn(str(self.model.id), model_str)
         self.assertIn(str(self.model.__dict__), model_str)
+
+    def test_class(self):
+        """ Validate the types of the attributes an class. """
+        with self.subTest(msg='Inheritance'):
+            self.assertTrue(issubclass(User, BaseModel))
+
+        with self.subTest(msg='Attributes'):
+            self.assertIsInstance(User.email, str)
+            self.assertIsInstance(User.password, str)
+            self.assertIsInstance(User.first_name, str)
+            self.assertIsInstance(User.last_name, str)
