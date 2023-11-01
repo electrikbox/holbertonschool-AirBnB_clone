@@ -13,6 +13,9 @@ class HBNBCommand(cmd.Cmd):
     """
     prompt = "(hbnb) "
 
+    # Quit commands and  Emptyline
+    # ============================================================ #
+
     def do_quit(self, arg):
         """Quit command to exit the program"""
         return True
@@ -25,6 +28,9 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Do nothing when user input is empty"""
         pass
+
+    # Create
+    # ============================================================ #
 
     def do_create(self, arg):
         """ Create an instance and save it """
@@ -42,6 +48,9 @@ class HBNBCommand(cmd.Cmd):
         instance = getattr(models, class_name)()
         instance.save()
         print(instance.id)
+
+    # Show instance
+    # ============================================================ #
 
     def do_show(self, arg):
         """ Prints the string rep of an instance """
@@ -70,6 +79,9 @@ class HBNBCommand(cmd.Cmd):
             return
 
         print(all_objects[key])
+
+    # Destroy
+    # ============================================================ #
 
     def do_destroy(self, arg):
         """ Deletes an instance based on class name + ID """
@@ -100,6 +112,9 @@ class HBNBCommand(cmd.Cmd):
         del all_objects[key]
         models.storage.save()
 
+    # Show all instances
+    # ============================================================ #
+
     def do_all(self, arg):
         """Print all instances from the storage"""
         all_objects = models.storage.all()
@@ -117,6 +132,9 @@ class HBNBCommand(cmd.Cmd):
             for instance in all_objects.values():
                 if type(instance).__name__ == class_name:
                     print(str(instance))
+
+    # Update instance
+    # ============================================================ #
 
     def do_update(self, arg):
         """Update an instance and save it"""
