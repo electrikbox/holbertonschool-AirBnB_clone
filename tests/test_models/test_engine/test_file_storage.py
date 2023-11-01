@@ -74,8 +74,12 @@ class TestFileStorage(unittest.TestCase):
 
     def test_reload3(self):
         """ Test reload filestorage """
-        test_dict = {"BaseModel.test": {"id": "test", "created_at": "2023-10-23T14:10:06.000000",
-                                        "updated_at": "2023-10-23T14:10:06.000000", "__class__": "BaseModel"}}
+        test_dict = {"BaseModel.test": {
+            "id": "test", "created_at": "2023-10-23T14:10:06.000000",
+            "updated_at": "2023-10-23T14:10:06.000000",
+            "__class__": "BaseModel"
+            }}
+
         with open(FileStorage._FileStorage__file_path, "w") as file:
             json.dump(test_dict, file)
 
