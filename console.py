@@ -16,11 +16,11 @@ class HBNBCommand(cmd.Cmd):
     # Quit commands and  Emptyline
     # ============================================================ #
 
-    def do_quit(self, arg):
+    def do_quit(self, line):
         """Quit command to exit the program"""
         return True
 
-    def do_EOF(self, arg):
+    def do_EOF(self, line):
         """End of file command to exit the program"""
         print('')
         return True
@@ -32,13 +32,13 @@ class HBNBCommand(cmd.Cmd):
     # Create
     # ============================================================ #
 
-    def do_create(self, arg):
+    def do_create(self, line):
         """ Create an instance and save it """
-        if not arg:
+        if not line:
             print("** class name missing **")
             return
 
-        args = shlex.split(arg)
+        args = shlex.split(line)
         class_name = args[0]
 
         if class_name not in models.classes:
@@ -52,13 +52,13 @@ class HBNBCommand(cmd.Cmd):
     # Show instance
     # ============================================================ #
 
-    def do_show(self, arg):
+    def do_show(self, line):
         """ Prints the string rep of an instance """
-        if not arg:
+        if not line:
             print("** class name missing **")
             return
 
-        args = shlex.split(arg)
+        args = shlex.split(line)
 
         if len(args) < 2:
             print("** instance id missing **")
@@ -83,13 +83,13 @@ class HBNBCommand(cmd.Cmd):
     # Destroy
     # ============================================================ #
 
-    def do_destroy(self, arg):
+    def do_destroy(self, line):
         """ Deletes an instance based on class name + ID """
-        if not arg:
+        if not line:
             print("** class name missing **")
             return
 
-        args = shlex.split(arg)
+        args = shlex.split(line)
 
         if len(args) < 2:
             print("** instance id missing **")
@@ -115,14 +115,14 @@ class HBNBCommand(cmd.Cmd):
     # Show all instances
     # ============================================================ #
 
-    def do_all(self, arg):
+    def do_all(self, line):
         """Print all instances from the storage"""
         all_objects = models.storage.all()
 
-        if not arg:
+        if not line:
             print([str(instance) for instance in all_objects.values()])
         else:
-            args = shlex.split(arg)
+            args = shlex.split(line)
             class_name = args[0]
 
             if class_name not in models.classes:
@@ -136,13 +136,13 @@ class HBNBCommand(cmd.Cmd):
     # Update instance
     # ============================================================ #
 
-    def do_update(self, arg):
+    def do_update(self, line):
         """Update an instance and save it"""
-        if not arg:
+        if not line:
             print("** class name missing **")
             return
 
-        args = shlex.split(arg)
+        args = shlex.split(line)
 
         class_name = args[0]
 
@@ -175,8 +175,76 @@ class HBNBCommand(cmd.Cmd):
 
         attribut_value = args[3]
 
-        setattr(all_objects[key], attribut_name, attribut_value)
+        if attribut_name in models.int_attrs:
+            setattr(all_objects[key], attribut_name, int(attribut_value))
+
+        elif attribut_name in models.float_attrs:
+            setattr(all_objects[key], attribut_name, float(attribut_value))
+
+        else:
+            setattr(all_objects[key], attribut_name, attribut_value)
+
         all_objects[key].save()
+
+    # Count instances in json (all or per class)
+    # ============================================================ #
+
+    def do_count(self, line):
+        """Count instances"""
+        if not line:
+            print("** class name missing **")
+            return
+
+        args = shlex.split(line)
+        class_name = args[0]
+
+        if class_name not in models.classes:
+            print("** class doesn't exist **")
+            return
+
+        all_objects = models.storage.all()
+
+        count = 0
+
+        for key in all_objects.keys():
+            name = key.split('.')[0]
+            if name == class_name:
+                count += 1
+
+        print(count)
+
+    # Alternative command syntax
+    # ============================================================ #
+
+    def precmd(self, line):
+        """handle alt syntax"""
+        if not line:
+            return line
+
+        if "." not in line:
+            return line
+
+        class_and_cmd = line.split("(")[0]
+        class_name = class_and_cmd.split(".")[0]
+
+        if class_name not in models.classes:
+            return line
+
+        command = class_and_cmd.split(".")[1]
+        new_line = f"{command} {class_name}"
+
+        args = line.split("(")[1].replace(")", "").split(",")
+
+        if len(args) > 0:
+            instance_id = args[0]
+            new_line += f" {instance_id}"
+
+        if len(args) > 2:
+            attribut_name = args[1]
+            attribut_value = args[2]
+            new_line += f"{attribut_name}{attribut_value}"
+
+        return new_line
 
 
 if __name__ == '__main__':

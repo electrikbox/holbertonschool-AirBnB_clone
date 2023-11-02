@@ -10,9 +10,14 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
+# Storage
+# =================================================== #
 
 storage = FileStorage()
 storage.reload()
+
+# Models classes
+# =================================================== #
 
 classes = [
     "BaseModel",
@@ -22,4 +27,19 @@ classes = [
     "City",
     "Amenity",
     "Review"
+]
+
+# Attributs types
+# =================================================== #
+
+int_attrs = [
+    "number_rooms",
+    "number_bathrooms",
+    "max_guest",
+    "price_by_night"
+]
+
+float_attrs = [
+    "latitude",
+    "longitude"
 ]
