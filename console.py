@@ -4,6 +4,7 @@
 import cmd
 import shlex
 import models
+import json
 
 
 class HBNBCommand(cmd.Cmd):
@@ -154,37 +155,36 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        instance_id = args[1]
-
-        all_objects = models.storage.all()
-        key = "{}.{}".format(class_name, instance_id)
-
-        if key not in all_objects:
-            print("** no instance found **")
-            return
-
         if len(args) < 3:
             print("** attribute name missing **")
             return
-
-        attribut_name = args[2]
 
         if len(args) < 4:
             print("** value missing **")
             return
 
-        attribut_value = args[3]
+        instance_id = args[1]
+        key = "{}.{}".format(class_name, instance_id)
+        all_objects = models.storage.all()
 
-        if attribut_name in models.int_attrs:
-            setattr(all_objects[key], attribut_name, int(attribut_value))
+        if key not in all_objects:
+            print("** no instance found **")
+            return
 
-        elif attribut_name in models.float_attrs:
-            setattr(all_objects[key], attribut_name, float(attribut_value))
+        for idx in range(2, len(args), 2):
+            attribut_name = args[idx]
+            attribut_value = args[idx + 1]
 
-        else:
-            setattr(all_objects[key], attribut_name, attribut_value)
+            if attribut_name in models.int_attrs:
+                setattr(all_objects[key], attribut_name, int(attribut_value))
 
-        all_objects[key].save()
+            elif attribut_name in models.float_attrs:
+                setattr(all_objects[key], attribut_name, float(attribut_value))
+
+            else:
+                setattr(all_objects[key], attribut_name, attribut_value)
+
+            all_objects[key].save()
 
     # Count instances in json (all or per class)
     # ============================================================ #
@@ -233,16 +233,28 @@ class HBNBCommand(cmd.Cmd):
         command = class_and_cmd.split(".")[1]
         new_line = f"{command} {class_name}"
 
+        # get all attributs inside ()
         args = line.split("(")[1].replace(")", "").split(",")
 
         if len(args) > 0:
             instance_id = args[0]
             new_line += f" {instance_id}"
 
-        if len(args) > 2:
-            attribut_name = args[1]
-            attribut_value = args[2]
-            new_line += f"{attribut_name}{attribut_value}"
+        if len(args) > 1:
+            items = ', '.join(item for item in args[1:])
+
+            # if dictionnary in ()
+            try:
+                items_dict = json.loads(items)
+                name = [key for key in items_dict.keys()]
+                value = [val for val in items_dict.values()]
+                for idx in range(len(items_dict)):
+                    new_line += f" {name[idx]} {value[idx]}"
+            # else
+            except json.decoder.JSONDecodeError:
+                attribut_name = args[1]
+                attribut_value = args[2]
+                new_line += f"{attribut_name}{attribut_value}"
 
         return new_line
 
