@@ -58,12 +58,13 @@ EOF  all  create  destroy  help  quit  show  update
 | EOF    | Exit the console by EOF (`ctrl-D`)    | -
 | quit    | Quit the console    | `quit`
 
-### 📺 Output
+### 📺 Outputs
 
 - **create** :
 ```bash
 (hbnb) create BaseModel
 ```
+output ⤵️
 ```bash
 bf68a684-6994-41cc-82f2-2d1341e711b3
 ```
@@ -71,6 +72,7 @@ bf68a684-6994-41cc-82f2-2d1341e711b3
 ```bash
 (hbnb) show BaseModel bf68a684-6994-41cc-82f2-2d1341e711b3
 ```
+output ⤵️
 ```bash
 [BaseModel] (bf68a684-6994-41cc-82f2-2d1341e711b3) {'id': 'bf68a684-6994-41cc-82f2-2d1341e711b3', 'created_at': datetime.datetime(2023, 11, 1, 17, 44, 6, 792332), 'updated_at': datetime.datetime(2023, 11, 1, 17, 44, 6, 792371)}
 ```
@@ -78,6 +80,7 @@ bf68a684-6994-41cc-82f2-2d1341e711b3
 ```bash
 (hbnb) update BaseModel bf68a684-6994-41cc-82f2-2d1341e711b3 name "Roger"
 ```
+output ⤵️
 ```bash
 no output
 ```
@@ -97,6 +100,7 @@ but `file.json` is updated :
 ```bash
 (hbnb) destroy BaseModel bf68a684-6994-41cc-82f2-2d1341e711b3
 ```
+output ⤵️
 ```bash
 no output
 ```
@@ -109,8 +113,11 @@ but `file.json` is updated :
 ### 👑 BaseModel
 The **BaseModel class** is the base class for this project and defines all the attributes for the other classes
 
-- **Public instance attributes** : `id` / `created_at`/ `updated_at`
-- **Public instance methods** : `save` / `to_dict`
+| Public instance attributes | Public instance methods |
+| -------- | -------- |
+| `id`    | `save`   |
+| `created_at`    | `to_dict`    |
+| `updated_at`    | -    |
 
 ### 👶 Others Classes
 #### 🚨 Inherits  from `BaseModel`
@@ -130,8 +137,12 @@ The `FileStorage` class is used to save and load data from a JSON file.
 
 It acts as a bridge between the application's objects and a file, ensuring data persistence, it allows the application to store and retrieve instances of various classes efficiently.
 
-- **Public instance methods** : `all` / `new`/ `save` / `reload`
-- **Private class attributes** : `file_path` / `objects`
+| Public instance methods | Private class attributes |
+| -------- | -------- |
+| `all`    | `file_path`    |
+| `new`   | `objects`   |
+| `save`    | -    |
+| `reload`    | -    |
 
 ## 💪 Testing
 Unittests for this project are defined in the `tests` folder.
