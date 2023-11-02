@@ -52,11 +52,23 @@ EOF  all  create  destroy  help  quit  show  update
 | all    | Prints the string representations of all instances of a given class    | `all <class_name>` |
 | create    | Creates a new instance of a given class, prints ID and save it into a JSON file   | `create <class_name>` |
 | show    | Prints the string representation of a class instance based on a given id    | `show <class_name> <id>` |
+| count    | Count the nb of instance of a given class    | `count <class_name>` |
 | update    | Updates a class instance based on a given id with a given key/value attribute pair or dictionary of attribute pair    | `update <class name> <id> <attribute name> "<attribute value>"`
 | destroy    | Deletes a class instance based on a given id    | `destroy <class_name> <id>` |
 | help   |  Displays available commands or gives info  |  `help <command>`
 | EOF    | Exit the console by EOF (`ctrl-D`)    | -
 | quit    | Quit the console    | `quit`
+
+### 💡 Alt syntax
+You can also used every commands like that :
+```bash
+(hbnb) <class_name>.cmd(<optional arg>)
+```
+```bash
+(hbnb) User.create()
+1337
+(hbnb) User.update(1337, name, Bernard)
+```
 
 ### 📺 Outputs
 
@@ -75,6 +87,14 @@ bf68a684-6994-41cc-82f2-2d1341e711b3
 output ⤵️
 ```bash
 [BaseModel] (bf68a684-6994-41cc-82f2-2d1341e711b3) {'id': 'bf68a684-6994-41cc-82f2-2d1341e711b3', 'created_at': datetime.datetime(2023, 11, 1, 17, 44, 6, 792332), 'updated_at': datetime.datetime(2023, 11, 1, 17, 44, 6, 792371)}
+```
+- **count**
+```bash
+(hbnb) count User
+```
+output ⤵️
+```bash
+2
 ```
 - **update**
 ```bash
