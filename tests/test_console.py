@@ -20,7 +20,11 @@ class TestConsole(unittest.TestCase):
             self.assertTrue(output)
 
     def test_quit(self):
-        pass
+        with self.assertRaises(SystemExit) as cm:
+            with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+                self.console.onecmd("quit")
+
+        self.assertEqual(cm.exception.code, 1)
 
     def test_show(self):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
@@ -118,7 +122,8 @@ class TestConsole(unittest.TestCase):
             with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
                 self.console.onecmd(f"create {models_list[index]}")
                 instance_id = mock_stdout.getvalue().strip()
-                self.console.onecmd(f"{models_list[index]}.show({instance_id})")
+                self.console.onecmd(
+                    f"{models_list[index]}.show({instance_id})")
                 output = mock_stdout.getvalue().strip()
                 self.assertIn(f"{models_list[index]}", output)
 
@@ -135,8 +140,8 @@ class TestConsole(unittest.TestCase):
             with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
                 self.console.onecmd(f"create {models_list[index]}")
                 instance_id = mock_stdout.getvalue().strip()
-                self.console.onecmd(f"{models_list[index]}.destroy({instance_id})")
-                output = mock_stdout.getvalue().strip()
+                self.console.onecmd(
+                    f"{models_list[index]}.destroy({instance_id})")
                 self.assertNotIn(f"{models_list[index]}", self.storage.all())
 
     def test_update_alt_syntax(self):
