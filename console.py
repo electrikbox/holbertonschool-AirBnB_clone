@@ -4,8 +4,6 @@
 import cmd
 import shlex
 import models
-import json
-from colorama import Fore
 
 
 class HBNBCommand(cmd.Cmd):
@@ -13,7 +11,7 @@ class HBNBCommand(cmd.Cmd):
     Args:
         cmd: cmd class inheritance
     """
-    prompt = Fore.RESET + "(hbnb) "
+    prompt = "(hbnb) "
 
     # Quit commands and  Emptyline
     # ============================================================ #
@@ -49,7 +47,7 @@ class HBNBCommand(cmd.Cmd):
 
         instance = getattr(models, class_name)()
         instance.save()
-        print(Fore.LIGHTCYAN_EX + f"{instance.id}")
+        print(instance.id)
 
     # Show instance
     # ============================================================ #
@@ -57,30 +55,30 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, line):
         """ Prints the string rep of an instance """
         if not line:
-            print(Fore.RED + "** class name missing **")
+            print("** class name missing **")
             return
 
         args = shlex.split(line)
 
         if len(args) < 2:
-            print(Fore.RED + "** instance id missing **")
+            print("** instance id missing **")
             return
 
         class_name = args[0]
         instance_id = args[1]
 
         if class_name not in models.classes:
-            print(Fore.RED + "** class doesn't exist **")
+            print("** class doesn't exist **")
             return
 
         all_objects = models.storage.all()
         key = "{}.{}".format(class_name, instance_id)
 
         if key not in all_objects:
-            print(Fore.RED + "** no instance found **")
+            print("** no instance found **")
             return
 
-        print(Fore.LIGHTCYAN_EX + f"{all_objects[key]}")
+        print(all_objects[key])
 
     # Destroy
     # ============================================================ #
@@ -88,27 +86,27 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, line):
         """ Deletes an instance based on class name + ID """
         if not line:
-            print(Fore.RED + "** class name missing **")
+            print("** class name missing **")
             return
 
         args = shlex.split(line)
 
         if len(args) < 2:
-            print(Fore.RED + "** instance id missing **")
+            print("** instance id missing **")
             return
 
         class_name = args[0]
         instance_id = args[1]
 
         if class_name not in models.classes:
-            print(Fore.RED + "** class doesn't exist **")
+            print("** class doesn't exist **")
             return
 
         all_objects = models.storage.all()
         key = "{}.{}".format(class_name, instance_id)
 
         if key not in all_objects:
-            print(Fore.RED + "** no instance found **")
+            print("** no instance found **")
             return
 
         del all_objects[key]
@@ -122,19 +120,18 @@ class HBNBCommand(cmd.Cmd):
         all_objects = models.storage.all()
 
         if not line:
-            print(Fore.LIGHTCYAN_EX +
-                  f"{[str(instance) for instance in all_objects.values()]}")
+            print([str(instance) for instance in all_objects.values()])
         else:
             args = shlex.split(line)
             class_name = args[0]
 
             if class_name not in models.classes:
-                print(Fore.RED + "** class doesn't exist **")
+                print("** class doesn't exist **")
                 return
 
             for instance in all_objects.values():
                 if type(instance).__name__ == class_name:
-                    print(Fore.LIGHTCYAN_EX + f"{str(instance)}")
+                    print(str(instance))
 
     # Update instance
     # ============================================================ #
@@ -142,7 +139,7 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, line):
         """Update an instance and save it"""
         if not line:
-            print(Fore.RED + "** class name missing **")
+            print("** class name missing **")
             return
 
         args = shlex.split(line)
@@ -150,19 +147,19 @@ class HBNBCommand(cmd.Cmd):
         class_name = args[0]
 
         if class_name not in models.classes:
-            print(Fore.RED + "** class doesn't exist **")
+            print("** class doesn't exist **")
             return
 
         if len(args) < 2:
-            print(Fore.RED + "** instance id missing **")
+            print("** instance id missing **")
             return
 
         if len(args) < 3:
-            print(Fore.RED + "** attribute name missing **")
+            print("** attribute name missing **")
             return
 
         if len(args) < 4:
-            print(Fore.RED + "** value missing **")
+            print("** value missing **")
             return
 
         instance_id = args[1]
@@ -170,7 +167,7 @@ class HBNBCommand(cmd.Cmd):
         all_objects = models.storage.all()
 
         if key not in all_objects:
-            print(Fore.RED + "** no instance found **")
+            print("** no instance found **")
             return
 
         # loop step per 2
@@ -195,14 +192,14 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, line):
         """Count instances"""
         if not line:
-            print(Fore.RED + "** class name missing **")
+            print("** class name missing **")
             return
 
         args = shlex.split(line)
         class_name = args[0]
 
         if class_name not in models.classes:
-            print(Fore.RED + "** class doesn't exist **")
+            print("** class doesn't exist **")
             return
 
         all_objects = models.storage.all()
@@ -214,7 +211,7 @@ class HBNBCommand(cmd.Cmd):
             if name == class_name:
                 count += 1
 
-        print(Fore.LIGHTCYAN_EX + f"{count}")
+        print(count)
 
     # Alternative command syntax
     # ============================================================ #
@@ -254,7 +251,7 @@ class HBNBCommand(cmd.Cmd):
     # ============================================================ #
 
     def default(self, line):
-        print(Fore.RED + f"*** Unknown syntax: {line}")
+        print(f"*** Unknown syntax: {line}")
 
 
 if __name__ == '__main__':
