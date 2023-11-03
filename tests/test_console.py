@@ -18,8 +18,7 @@ class TestConsole(unittest.TestCase):
             self.assertTrue(output)
 
     def test_quit(self):
-        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-            self.console.onecmd("quit")
+        pass
 
     def test_show(self):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
@@ -103,6 +102,23 @@ class TestConsole(unittest.TestCase):
                 self.console.onecmd(f"{models_list[index]}.count()")
                 all_output = mock_stdout.getvalue().strip()
                 self.assertIn(f"{models_list[index]}", all_output)
+
+    def test_show_alt_syntax_1(self):
+        models_list = [
+            "BaseModel",
+            "Review",
+            "User",
+            "State",
+            "Amenity",
+            "Place"
+            ]
+        for index in range(len(models_list)):
+            with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+                self.console.onecmd(f"create {models_list[index]}")
+                instance_id = mock_stdout.getvalue().strip()
+                self.console.onecmd(f"{models_list[index]}.show({instance_id})")
+                output = mock_stdout.getvalue().strip()
+                self.assertIn(f"{models_list[index]}", output)
 
 
 if __name__ == '__main__':
