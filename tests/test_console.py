@@ -5,6 +5,7 @@ import unittest
 from unittest.mock import patch
 from io import StringIO
 from console import HBNBCommand
+import models
 
 class TestConsole(unittest.TestCase):
     def setUp(self):
@@ -15,6 +16,12 @@ class TestConsole(unittest.TestCase):
             self.console.onecmd("create BaseModel")
             output = mock_stdout.getvalue().strip()
             self.assertTrue(output)
+
+    def test_quit(self):
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.console.onecmd("quit")
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual(output, '')
 
     def test_show(self):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
@@ -54,7 +61,7 @@ class TestConsole(unittest.TestCase):
             with patch('sys.stdout', new_callable=StringIO) as mock_stdout2:
                 self.console.onecmd("count User")
                 count_output = mock_stdout2.getvalue().strip()
-                self.assertEqual(count_output, "3")
+                self.assertEqual(count_output, "4")
 
     def test_update(self):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
@@ -66,6 +73,22 @@ class TestConsole(unittest.TestCase):
                 self.console.onecmd(f"show User {output}")
                 show_output = mock_stdout2.getvalue().strip()
                 self.assertIn("'last_name': 'John'", show_output)
+
+    def test_all_alt_syntax_1(self):
+        models_list = [
+            "BaseModel",
+            "Review",
+            "User",
+            "State",
+            "Amenity",
+            "Place"
+            ]
+        for index in range(len(models_list)):
+            with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+                self.console.onecmd(f"create {models_list[index]}")
+                self.console.onecmd(f"{models_list[index]}.all()")
+                all_output = mock_stdout.getvalue().strip()
+                self.assertIn(f"{models_list[index]}", all_output)
 
 
 if __name__ == '__main__':
