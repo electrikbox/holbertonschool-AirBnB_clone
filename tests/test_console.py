@@ -6,6 +6,7 @@ from unittest.mock import patch
 from io import StringIO
 from console import HBNBCommand
 from models.engine.file_storage import FileStorage
+import subprocess
 
 
 class TestConsole(unittest.TestCase):
@@ -23,11 +24,10 @@ class TestConsole(unittest.TestCase):
     #     self.assertTrue(HBNBCommand().onecmd("quit"))
 
     def test_do_quit(self):
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("quit")
-        msg = f.getvalue()
-        self.assertTrue(len(msg) == 0)
-        self.assertEqual("", msg)
+        completed_process = subprocess.run("./console.py", shell=True, text=True)
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.console.onecmd("quit")
+        self.assertEqual(completed_process.returncode, 0)
 
     def test_EOF(self):
         self.assertTrue(HBNBCommand().onecmd("EOF"))
