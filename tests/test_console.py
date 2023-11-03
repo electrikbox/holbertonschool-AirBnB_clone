@@ -21,15 +21,8 @@ class TestConsole(unittest.TestCase):
             self.assertTrue(output)
 
     def test_quit(self):
-        process = subprocess.Popen(
-            ['python3', 'console.py'],
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True)
-        process.communicate(input="quit\n")
-        process.wait()
-        self.assertEqual(process.returncode, 0)
+        with self.assertRaises(SystemExit):
+            self.console.onecmd("quit")
 
     def test_show(self):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
