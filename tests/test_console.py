@@ -20,7 +20,10 @@ class TestConsole(unittest.TestCase):
             self.assertTrue(output)
 
     def test_quit(self):
-        self.assertTrue(HBNBCommand().onecmd("quit"))
+        with patch('sys.stdout', new_callable=StringIO()) as mock_stdout:
+            with self.assertRaises(SystemExit):
+                self.console.onecmd("quit")
+            self.assertEqual('', mock_stdout.getvalue())
 
     def test_EOF(self):
         self.assertTrue(HBNBCommand().onecmd("EOF"))
