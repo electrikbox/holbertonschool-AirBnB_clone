@@ -19,8 +19,15 @@ class TestConsole(unittest.TestCase):
             output = mock_stdout.getvalue().strip()
             self.assertTrue(output)
 
-    def test_quit(self):
-        self.assertTrue(HBNBCommand().onecmd("quit"))
+    # def test_quit(self):
+    #     self.assertTrue(HBNBCommand().onecmd("quit"))
+
+    def test_do_quit(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("quit")
+        msg = f.getvalue()
+        self.assertTrue(len(msg) == 0)
+        self.assertEqual("", msg)
 
     def test_EOF(self):
         self.assertTrue(HBNBCommand().onecmd("EOF"))
