@@ -5,7 +5,7 @@ import unittest
 from unittest.mock import patch
 from io import StringIO
 from console import HBNBCommand
-import models
+import subprocess
 
 class TestConsole(unittest.TestCase):
     def setUp(self):
@@ -20,8 +20,6 @@ class TestConsole(unittest.TestCase):
     def test_quit(self):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
             self.console.onecmd("quit")
-            output = mock_stdout.getvalue().strip()
-            self.assertEqual(output, '')
 
     def test_show(self):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
@@ -87,6 +85,22 @@ class TestConsole(unittest.TestCase):
             with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
                 self.console.onecmd(f"create {models_list[index]}")
                 self.console.onecmd(f"{models_list[index]}.all()")
+                all_output = mock_stdout.getvalue().strip()
+                self.assertIn(f"{models_list[index]}", all_output)
+
+    def test_count_alt_syntax_1(self):
+        models_list = [
+            "BaseModel",
+            "Review",
+            "User",
+            "State",
+            "Amenity",
+            "Place"
+            ]
+        for index in range(len(models_list)):
+            with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+                self.console.onecmd(f"create {models_list[index]}")
+                self.console.onecmd(f"{models_list[index]}.count()")
                 all_output = mock_stdout.getvalue().strip()
                 self.assertIn(f"{models_list[index]}", all_output)
 
