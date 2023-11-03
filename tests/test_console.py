@@ -5,11 +5,13 @@ import unittest
 from unittest.mock import patch
 from io import StringIO
 from console import HBNBCommand
-import subprocess
+from models.engine.file_storage import FileStorage
+
 
 class TestConsole(unittest.TestCase):
     def setUp(self):
         self.console = HBNBCommand()
+        self.storage = FileStorage()
 
     def test_create(self):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
@@ -119,6 +121,23 @@ class TestConsole(unittest.TestCase):
                 self.console.onecmd(f"{models_list[index]}.show({instance_id})")
                 output = mock_stdout.getvalue().strip()
                 self.assertIn(f"{models_list[index]}", output)
+
+    def test_destroy_alt_syntax_1(self):
+        models_list = [
+            "BaseModel",
+            "Review",
+            "User",
+            "State",
+            "Amenity",
+            "Place"
+            ]
+        for index in range(len(models_list)):
+            with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+                self.console.onecmd(f"create {models_list[index]}")
+                instance_id = mock_stdout.getvalue().strip()
+                self.console.onecmd(f"{models_list[index]}.destroy({instance_id})")
+                output = mock_stdout.getvalue().strip()
+                self.assertNotIn(f"{models_list[index]}", self.storage.all())
 
 
 if __name__ == '__main__':
