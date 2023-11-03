@@ -20,14 +20,15 @@ class TestConsole(unittest.TestCase):
             output = mock_stdout.getvalue().strip()
             self.assertTrue(output)
 
-    # def test_quit(self):
-    #     self.assertTrue(HBNBCommand().onecmd("quit"))
-
-    def test_do_quit(self):
-        completed_process = subprocess.run("./console.py", shell=True, text=True)
-        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-            self.console.onecmd("quit")
-        self.assertEqual(completed_process.returncode, 0)
+    def test_quit(self):
+        process = subprocess.Popen(
+            ['python3', 'console.py'],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True)
+        process.communicate(input="quit\n")
+        self.assertEqual(process.returncode, 0)
 
     def test_EOF(self):
         self.assertTrue(HBNBCommand().onecmd("EOF"))
