@@ -5,6 +5,7 @@ import cmd
 import shlex
 import models
 import json
+from colorama import Fore
 
 
 class HBNBCommand(cmd.Cmd):
@@ -12,7 +13,7 @@ class HBNBCommand(cmd.Cmd):
     Args:
         cmd: cmd class inheritance
     """
-    prompt = "(hbnb) "
+    prompt = Fore.RESET + "(hbnb) "
 
     # Quit commands and  Emptyline
     # ============================================================ #
@@ -48,7 +49,7 @@ class HBNBCommand(cmd.Cmd):
 
         instance = getattr(models, class_name)()
         instance.save()
-        print(instance.id)
+        print(Fore.LIGHTCYAN_EX + f"{instance.id}")
 
     # Show instance
     # ============================================================ #
@@ -56,30 +57,30 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, line):
         """ Prints the string rep of an instance """
         if not line:
-            print("** class name missing **")
+            print(Fore.RED + "** class name missing **")
             return
 
         args = shlex.split(line)
 
         if len(args) < 2:
-            print("** instance id missing **")
+            print(Fore.RED + "** instance id missing **")
             return
 
         class_name = args[0]
         instance_id = args[1]
 
         if class_name not in models.classes:
-            print("** class doesn't exist **")
+            print(Fore.RED + "** class doesn't exist **")
             return
 
         all_objects = models.storage.all()
         key = "{}.{}".format(class_name, instance_id)
 
         if key not in all_objects:
-            print("** no instance found **")
+            print(Fore.RED + "** no instance found **")
             return
 
-        print(all_objects[key])
+        print(Fore.LIGHTCYAN_EX + f"{all_objects[key]}")
 
     # Destroy
     # ============================================================ #
@@ -87,27 +88,27 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, line):
         """ Deletes an instance based on class name + ID """
         if not line:
-            print("** class name missing **")
+            print(Fore.RED + "** class name missing **")
             return
 
         args = shlex.split(line)
 
         if len(args) < 2:
-            print("** instance id missing **")
+            print(Fore.RED + "** instance id missing **")
             return
 
         class_name = args[0]
         instance_id = args[1]
 
         if class_name not in models.classes:
-            print("** class doesn't exist **")
+            print(Fore.RED + "** class doesn't exist **")
             return
 
         all_objects = models.storage.all()
         key = "{}.{}".format(class_name, instance_id)
 
         if key not in all_objects:
-            print("** no instance found **")
+            print(Fore.RED + "** no instance found **")
             return
 
         del all_objects[key]
@@ -121,18 +122,19 @@ class HBNBCommand(cmd.Cmd):
         all_objects = models.storage.all()
 
         if not line:
-            print([str(instance) for instance in all_objects.values()])
+            print(Fore.LIGHTCYAN_EX +
+                  f"{[str(instance) for instance in all_objects.values()]}")
         else:
             args = shlex.split(line)
             class_name = args[0]
 
             if class_name not in models.classes:
-                print("** class doesn't exist **")
+                print(Fore.RED + "** class doesn't exist **")
                 return
 
             for instance in all_objects.values():
                 if type(instance).__name__ == class_name:
-                    print(str(instance))
+                    print(Fore.LIGHTCYAN_EX + f"{str(instance)}")
 
     # Update instance
     # ============================================================ #
@@ -140,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, line):
         """Update an instance and save it"""
         if not line:
-            print("** class name missing **")
+            print(Fore.RED + "** class name missing **")
             return
 
         args = shlex.split(line)
@@ -148,19 +150,19 @@ class HBNBCommand(cmd.Cmd):
         class_name = args[0]
 
         if class_name not in models.classes:
-            print("** class doesn't exist **")
+            print(Fore.RED + "** class doesn't exist **")
             return
 
         if len(args) < 2:
-            print("** instance id missing **")
+            print(Fore.RED + "** instance id missing **")
             return
 
         if len(args) < 3:
-            print("** attribute name missing **")
+            print(Fore.RED + "** attribute name missing **")
             return
 
         if len(args) < 4:
-            print("** value missing **")
+            print(Fore.RED + "** value missing **")
             return
 
         instance_id = args[1]
@@ -168,12 +170,13 @@ class HBNBCommand(cmd.Cmd):
         all_objects = models.storage.all()
 
         if key not in all_objects:
-            print("** no instance found **")
+            print(Fore.RED + "** no instance found **")
             return
 
+        # loop step per 2
         for idx in range(2, len(args), 2):
-            attribut_name = args[idx]
-            attribut_value = args[idx + 1]
+            attribut_name = args[idx].replace("{", "").replace(":", "")
+            attribut_value = args[idx + 1].replace("}", "")
 
             if attribut_name in models.int_attrs:
                 setattr(all_objects[key], attribut_name, int(attribut_value))
@@ -192,14 +195,14 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, line):
         """Count instances"""
         if not line:
-            print("** class name missing **")
+            print(Fore.RED + "** class name missing **")
             return
 
         args = shlex.split(line)
         class_name = args[0]
 
         if class_name not in models.classes:
-            print("** class doesn't exist **")
+            print(Fore.RED + "** class doesn't exist **")
             return
 
         all_objects = models.storage.all()
@@ -211,7 +214,7 @@ class HBNBCommand(cmd.Cmd):
             if name == class_name:
                 count += 1
 
-        print(count)
+        print(Fore.LIGHTCYAN_EX + f"{count}")
 
     # Alternative command syntax
     # ============================================================ #
@@ -241,22 +244,17 @@ class HBNBCommand(cmd.Cmd):
             new_line += f" {instance_id}"
 
         if len(args) > 1:
-            items = ', '.join(item for item in args[1:])
-
-            # if dictionnary in ()
-            try:
-                items_dict = json.loads(items)
-                name = [key for key in items_dict.keys()]
-                value = [val for val in items_dict.values()]
-                for idx in range(len(items_dict)):
-                    new_line += f" {name[idx]} {value[idx]}"
-            # else
-            except json.decoder.JSONDecodeError:
-                attribut_name = args[1]
-                attribut_value = args[2]
-                new_line += f"{attribut_name}{attribut_value}"
+            for idx in range(1, len(args)):
+                new_line += f" {args[idx]}"
+            print(new_line)
 
         return new_line
+
+    # Default error message
+    # ============================================================ #
+
+    def default(self, line):
+        print(Fore.RED + f"*** Unknown syntax: {line}")
 
 
 if __name__ == '__main__':
