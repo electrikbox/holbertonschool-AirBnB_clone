@@ -1,0 +1,17 @@
+.root {
+    --common-font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --common-font-color: #484848;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    color: var(--common-font-color);
+    font-family: var(--common-font-family);
+}
+
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+}
