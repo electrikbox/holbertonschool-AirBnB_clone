@@ -16,6 +16,7 @@
     border-radius: 4px;
     display: inline-block;
     min-height: 320px;
+    height: 100%;
     vertical-align: top;
     position: relative;
 }
