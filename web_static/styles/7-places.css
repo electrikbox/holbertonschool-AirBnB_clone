@@ -4,7 +4,8 @@
     z-index: -1;
 }
 .places h1 {
-    text-align: left;
+    top: 0;
+    left: 0;
     font-size: 30px;
 }
 .places article h2 {
