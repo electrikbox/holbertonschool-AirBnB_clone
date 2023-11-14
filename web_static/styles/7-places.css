@@ -4,13 +4,14 @@
     z-index: -1;
 }
 .places h1 {
-    top: 0;
-    left: 0;
+    text-align: left;
+    padding-left: 20px;
     font-size: 30px;
 }
 .places article h2 {
     text-align: center;
     font-size: 30px;
+    margin-top: 1px;
 }
 .places article {
     width: 390px;

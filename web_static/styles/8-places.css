@@ -4,6 +4,7 @@
 }
 .places h1 {
     text-align: left;
+    padding-left: 20px;
     font-size: 30px;
 }
 .places article {
@@ -23,8 +24,7 @@
 .places article h2 {
     text-align: center;
     font-size: 30px;
-    margin-bottom: 22px;
-    margin-top: 10px;
+    margin-top: 1px;
 }
 .price_by_night {
     position: absolute;
@@ -43,6 +43,7 @@
     height: 80px;
     border-top: 1px solid #DDDDDD;
     border-bottom: 1px solid #DDDDDD;
+    margin-top: 35px;
 }
 .max_guest {
     background-image: url("../images/icon_group.png");
