@@ -9,4 +9,6 @@ body {
     font-size: 14px;
     color: var(--common-font-color);
     font-family: var(--common-font-family);
+    min-height: 100vh;
+    position: relative;
 }
