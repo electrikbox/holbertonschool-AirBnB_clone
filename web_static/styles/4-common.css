@@ -6,6 +6,7 @@ body {
     font-family: Circular, "Helvetica Neue", Arial, Helvetica, sans-serif;
     min-height: 100vh;
     position: relative;
+    margin-bottom: -30px;
 }
 .container {
     max-width: 1000px;
