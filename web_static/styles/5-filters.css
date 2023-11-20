@@ -20,15 +20,11 @@
 }
 .filters button:hover {
     opacity: 90%;
-
 }
-.locations {
-    height: 100%;
-    width: 25%;
+.filters div:first-child {
     border-right: 1px solid #DDDDDD;
-    float: left;
 }
-.amenities {
+.filters .amenities, .filters .locations {
     height: 100%;
     width: 25%;
     float: left;
